@@ -10,13 +10,30 @@ Authentication handlers. The following methods are provided:
 
 `name()` returns a user's name if a user is currently authenticated; throws an `Authentication_exception` otherwise
 
+## Config
+
+```php
+// config file
+$config['authenticator'] = 'Ldap_authenticator';
+
+// controller file
+$this->load->add_package_path(APPPATH.'third_party/authenticator/');
+$this->load->library(config_item('authenticator'), array(), 'authenticator');
+$this->load->remove_package_path();
+if (! $this->authenticator->is_authenticated()) {
+    redirect("login");
+    return;
+}
+
+```
+
 ## Implementations
 
-Deny
+### Deny
 
 Deny all requests.
 
-Ldap
+### Ldap
 
 Lookup username and password in an LDAP directory. Sample config:
 
@@ -34,6 +51,6 @@ $config['ldap_filter']  = '(samaccountname={USERNAME})';
 $config['ldap_fields']  = array('cn');
 ````
 
-Passthrough
+### Passthrough
 
 Accept all requests, returning the username "username" and the name "Dummy User".
